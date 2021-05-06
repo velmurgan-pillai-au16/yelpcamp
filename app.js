@@ -1,7 +1,8 @@
+const fileupload = require('express-fileupload')
 const express = require('express')
 const mongoose = require('mongoose')
 const User = require('./models/User')
-
+const expHbs  = require('express-handlebars')
 const app = express()
 
 
@@ -14,25 +15,35 @@ mongoose.connect(DB_URL, {
     useCreateIndex: true
 }, async (err) => {
     if (err) throw err
-
+    
     console.log('Connected')
-
+    
     // const instance = new User()
-
+    
     const newUser = {
         email: "ASDASD",
         password: "asdasdasd"
     }
-
+    
     const user = new User(newUser)
-
+    
     const result = await user.save()
-
+    
     console.log(result)
+    
+})
 
+app.use(express.static('public'))
+app.use(fileupload())
+
+app.engine('hbs', expHbs({ extname:'hbs'}))
+app.set("view engine", 'hbs')
+
+app.get('/', (req, res) => {
+    res.render('landingpage')
 })
 
 
 
 
-app.listen(4000, () => console.log("Server Started"))
+app.listen(5000, () => console.log("Server Started"))
