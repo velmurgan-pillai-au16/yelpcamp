@@ -5,6 +5,11 @@ const User = require('./models/User')
 const expHbs  = require('express-handlebars')
 const app = express()
 
+app.use(express.static('public'))
+app.use(fileupload())
+
+app.engine('hbs', expHbs({ extname:'hbs'}))
+app.set("view engine", 'hbs')
 
 const DB_URL = "mongodb+srv://express-attainu:qAmxNDPVztn2rSUG@cluster0.bg4zd.mongodb.net/yelpcamp-attainu?retryWrites=true&w=majority"
 
@@ -33,17 +38,14 @@ mongoose.connect(DB_URL, {
     
 })
 
-app.use(express.static('public'))
-app.use(fileupload())
-
-app.engine('hbs', expHbs({ extname:'hbs'}))
-app.set("view engine", 'hbs')
 
 app.get('/', (req, res) => {
     res.render('landingpage')
 })
 
-
+app.get('/campgrounds', (req, res) => {
+    res.render('home')
+})
 
 
 app.listen(5000, () => console.log("Server Started"))
