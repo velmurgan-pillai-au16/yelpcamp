@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const fileupload = require('express-fileupload')
 const express = require('express')
 const mongoose = require('mongoose')
@@ -10,18 +11,31 @@ app.use(fileupload())
 
 app.engine('hbs', expHbs({ extname:'hbs'}))
 app.set("view engine", 'hbs')
+=======
+require('dotenv').config()
+const express = require('express')
+const mongoose = require('mongoose')
+const expHbs = require('express-handlebars')
 
-const DB_URL = "mongodb+srv://express-attainu:qAmxNDPVztn2rSUG@cluster0.bg4zd.mongodb.net/yelpcamp-attainu?retryWrites=true&w=majority"
+const app = express()
 
-mongoose.connect(DB_URL, {
+//Routers
+const userRouter = require('./routes/user')
+>>>>>>> 1bc9cc680124141b33f25b3d49931fd6aeb78b32
+
+
+const {DATABASE_URL} = process.env
+
+mongoose.connect(DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true
-}, async (err) => {
+}, (err) => {
     if (err) throw err
     
     console.log('Connected')
+<<<<<<< HEAD
     
     // const instance = new User()
     
@@ -48,4 +62,22 @@ app.get('/campgrounds', (req, res) => {
 })
 
 
+=======
+})
+
+//Handle Bars Middleware
+app.engine('hbs', expHbs({ extname: 'hbs'  }))
+app.set('view engine', 'hbs')
+
+app.use(express.urlencoded({extended: false}))
+
+
+app.use('/user', userRouter)
+
+
+app.get('/', async (req, res) => {
+    res.send("Welcome To YelpCamp")
+})
+
+>>>>>>> 1bc9cc680124141b33f25b3d49931fd6aeb78b32
 app.listen(5000, () => console.log("Server Started"))
